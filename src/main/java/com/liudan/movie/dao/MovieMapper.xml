@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liudan.movie.dao.MovieMapper">
+	<resultMap type = "movie" id = "movieResultMap"></resultMap>
+	<select id="selects" resultMap="movieResultMap">
+		select * from movie
+		<where>
+			<if test=" null!=mname and ''!=mname">
+				and mname like '%${mname}%'
+			</if>
+			<if test=" null!=author and ''!=author">
+				and author like '%${author}%'
+			</if>
+			<if test=" null!=price1 and 0.0!=price1">
+				and price >=${price1}
+			</if>
+			<if test=" null!=price2 and 0.0!=price2">
+				and price &lt;=${price2}
+			</if>
+			<if test=" null!=uptimestart and ''!=uptimestart">
+				and uptime >=${uptimestart}
+			</if>
+			<if test=" null!=uptimeend and ''!=uptimeend">
+				and uptime &lt;=${uptimeend}
+			</if>
+			<if test=" null!=longtimestart and ''!=longtimestart">
+				and longtime >=${longtimestart}
+			</if>
+			<if test=" null!=longtimeend and ''!=longtimeend">
+				and longtime &lt;=${longtimeend}
+			</if>
+			
+		</where>
+		<if test=" null!=orderColumn and orderColumn!=''">
+			order by ${orderColumn} ${orderMethod}
+		</if>
+	</select>
+	
+	<select id="getmoviebyid" resultType="movie">
+		select * from movie where mid=${id}
+	</select>
+	
+	<update id="xiugaimovie">
+		update movie set mname=#{mname},author=#{author},price=#{price},uptime=#{uptime},longtime=#{longtime},type=#{type},year=#{year},area=#{area} where mid=#{mid}
+	</update>
+</mapper>
